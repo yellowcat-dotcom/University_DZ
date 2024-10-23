@@ -1,7 +1,13 @@
+"""
+Potential Field based path planner
+Планировщик пути на основе потенциальных полей для робота
+Рандомятся преграды и цели
+"""
 from collections import deque
 import random
 import numpy as np
 import matplotlib.pyplot as plt
+
 
 # Parameters
 KP = 5.0  # коэффициент для притягивающего потенциала
