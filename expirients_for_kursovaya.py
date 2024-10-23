@@ -1,6 +1,7 @@
 """
 Potential Field based path planner
 Планировщик пути на основе потенциальных полей для робота
+Добавила случайные шаги
 """
 
 from collections import deque
