@@ -61,11 +61,16 @@ def calc_potential_field(gx, gy, ox, oy, reso, rr, sx, sy):
 
     return pmap, minx, miny
 
-
+#  Рассчитывает притягивающий потенциал на точке (x, y) относительно цели (gx, gy).
+# Притягивающий потенциал пропорционален расстоянию до цели.
 def calc_attractive_potential(x, y, gx, gy):
     return 0.5 * KP * np.hypot(x - gx, y - gy)
 
-
+# Рассчитывает отталкивающий потенциал для точки (x, y)
+# относительно ближайшего препятствия (ox[i], oy[i]).
+# Чем ближе к препятствию, тем сильнее отталкивание.
+# Если точка слишком близка к препятствию (меньше радиуса робота),
+# отталкивание становится очень сильным.
 def calc_repulsive_potential(x, y, ox, oy, rr):
     # search nearest obstacle
     minid = -1
@@ -93,7 +98,10 @@ def get_motion_model():
               [2, -1], [1, -2], [-2, 1], [-1, 2]]
     return motion
 
-
+# Обнаружение осцилляций
+# Функция сохраняет последние позиции робота и проверяет,
+# не возвращался ли робот на одну из предыдущих позиций,
+# что может свидетельствовать об осцилляции (застревании).
 def oscillations_detection(previous_ids, ix, iy):
     previous_ids.append((ix, iy))
 
@@ -108,7 +116,7 @@ def oscillations_detection(previous_ids, ix, iy):
             previous_ids_set.add(index)
     return False
 
-
+# Основная функция планирования пути
 def potential_field_planning(sx, sy, gx, gy, ox, oy, reso, rr):
     pmap, minx, miny = calc_potential_field(gx, gy, ox, oy, reso, rr, sx, sy)
 
@@ -178,7 +186,9 @@ def draw_heatmap(data):
     data = np.array(data).T
     plt.pcolor(data, vmax=100.0, cmap=plt.cm.Blues)
 
-
+#  Функция рисует тепловую карту потенциального поля,
+#  где области с низким потенциалом (близкие к цели) будут более светлыми,
+#  а области с высоким потенциалом (близкие к препятствиям) — темнее.
 def main():
     print("potential_field_planning start")
 
